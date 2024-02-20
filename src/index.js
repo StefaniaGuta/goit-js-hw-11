@@ -64,8 +64,8 @@ const fetchImages = async ()=> {
                 behavior: "smooth",
             });
             if(hits.length === totalHits){
-                loadBtn.style.display = "none";
                 Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
+                loadBtn.style.display = "none";
             }    
         }
 
