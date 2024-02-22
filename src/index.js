@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import Notiflix from "notiflix";
 import SimpleLightbox from "simplelightbox";
@@ -15,11 +14,13 @@ let page = 1;
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    clearGallery();
     page = 1;
     await fetchImages();
+    
 });
 
-loadBtn.addEventListener("click", async () => {
+loadBtn.addEventListener("click", async() => {
     page ++;
     await fetchImages();
   });
@@ -62,19 +63,17 @@ const fetchImages = async ()=> {
             window.scrollBy({
                 top: cardHeight * 2,
                 behavior: "smooth",
-            });
-            if(hits.length === totalHits){
-                Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
-                loadBtn.style.display = "none";
-            }    
-        }
-
+            })  
+        }  
+        if (hits < totalHits) {
+            loadBtn.style.display = "none";
+            Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
+        };   
     } catch(error) {
-        Notiflix.Notify.failure(
-        "Sorry, there are no images matching your search query. Please try again.");
+        Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.", error);
         console.log(error);
     };
-  }
+}
 
 function galleryImages(images) {
     const imageMarkup = images.map((image) => `
@@ -100,6 +99,10 @@ function galleryImages(images) {
                 </p>
             </div>
         </div>
-    <a/>`);
-    gallery.innerHTML = imageMarkup.join("");
+    </a>`);
+    gallery.innerHTML += imageMarkup.join("");
+}
+
+function clearGallery() {
+    gallery.innerHTML = '';
 }
